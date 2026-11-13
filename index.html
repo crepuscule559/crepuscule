@@ -3,108 +3,103 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Ananke · 梦角空间</title>
+  <title>crepuscule 梦角空间</title>
   <style>
-    /* ================= 基础变量与重置 ================= */
+    /* ================= 基础与变量 ================= */
     :root {
-      --theme-color: #FFB6C1;
-      --bg-gradient: linear-gradient(135deg, #e8f0fe 0%, #fce8e8 100%);
-      --card-bg: rgba(255, 255, 255, 0.85);
-      --text-main: #333;
-      --text-sub: #888;
-      --bubble-me: #95ec69;
-      --bubble-other: #ffffff;
+      --theme: #FFB6C1;
+      --bg: #eef2f7;
+      --card: rgba(255, 255, 255, 0.85);
+      --text: #333;
+      --sub: #888;
+      --me: #95ec69;
+      --other: #fff;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; }
-    body { background: var(--bg-gradient); height: 100vh; color: var(--text-main); overflow: hidden; display: flex; flex-direction: column; }
-    button { outline: none; cursor: pointer; }
-
-    /* 视图切换控制 */
-    .view { display: none; flex-direction: column; height: 100%; width: 100%; position: absolute; top: 0; left: 0; }
-    .view.active { display: flex; animation: fadeIn 0.3s ease; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
+    
+    /* ================= 视图控制 ================= */
+    .page { display: none; flex-direction: column; height: 100%; width: 100%; position: absolute; top: 0; left: 0; background: var(--bg); }
+    .page.active { display: flex; animation: fadeIn 0.3s; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
+    
+    .header { height: 56px; background: var(--theme); color: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; font-weight: bold; font-size: 17px; z-index: 10; }
+    .header-btn { background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; }
+    
     /* ================= 1. 开屏页 ================= */
-    #viewSplash {
-      background: linear-gradient(135deg, #f6f0fa 0%, #e0eafc 100%);
-      justify-content: center; align-items: center; z-index: 999; cursor: pointer;
-    }
-    .splash-logo {
-      font-family: 'Times New Roman', serif; font-size: 48px; font-style: italic;
-      color: #f9a8d4; letter-spacing: 2px; margin-bottom: 10px;
-      text-shadow: 0 4px 10px rgba(249, 168, 212, 0.3);
-    }
-    .splash-sub { font-size: 14px; color: #999; letter-spacing: 4px; margin-bottom: 50px; }
-    .splash-btn {
-      padding: 12px 40px; border-radius: 30px; border: 1px solid #f9a8d4;
-      background: rgba(255,255,255,0.6); color: #f9a8d4; font-size: 16px;
-      letter-spacing: 1px; backdrop-filter: blur(5px);
-    }
+    #page-splash { background: linear-gradient(135deg, #f6f0fa, #e0eafc); justify-content: center; align-items: center; z-index: 999; cursor: pointer; }
+    .logo { font-family: 'Times New Roman', serif; font-size: 50px; font-style: italic; color: #f9a8d4; margin-bottom: 10px; }
+    .btn-enter { padding: 12px 40px; border-radius: 30px; border: 1px solid #f9a8d4; color: #f9a8d4; background: transparent; margin-top: 40px; }
 
     /* ================= 2. 主界面 ================= */
-    #viewHome { padding: 20px 16px; overflow-y: auto; }
-    .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px 5px 20px; font-size: 15px; font-weight: 500; color: #555; }
-    .top-bar .title { font-family: 'Times New Roman', serif; font-size: 18px; font-style: italic; color: #777;}
+    #page-home { padding: 20px 16px; overflow-y: auto; }
+    .top-bar { display: flex; justify-content: space-between; font-size: 15px; font-weight: bold; color: #555; margin-bottom: 20px; }
+    .card { background: var(--card); border-radius: 20px; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid rgba(255,255,255,0.8); }
     
-    /* 羁绊大卡片 */
-    .relation-card {
-      background: var(--card-bg); border-radius: 24px; padding: 30px 20px;
-      display: flex; align-items: center; justify-content: center; position: relative;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.03); margin-bottom: 16px;
-      border: 1px solid rgba(255,255,255,0.9);
-    }
-    .avatar-box { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-    .avatar-img { width: 70px; height: 70px; border-radius: 50%; background: #e0e0e0; border: 3px solid #fff; object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
-    .avatar-name { font-size: 13px; color: #555; font-weight: bold; }
+    /* 羁绊卡 */
+    .couple { display: flex; align-items: center; justify-content: center; position: relative; }
+    .avatar-box { text-align: center; z-index: 2; }
+    .avatar { width: 64px; height: 64px; border-radius: 50%; background: #eee; object-fit: cover; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
+    .avatar-name { font-size: 13px; font-weight: bold; color: #555; margin-top: 8px; }
+    .line { flex: 1; height: 1px; background: #f9a8d4; position: relative; margin: 0 10px; top: -15px; }
+    .heart { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background: #fff; color: #f9a8d4; padding: 0 8px; border-radius: 50%; font-size: 20px; }
     
-    /* 爱心连线 */
-    .heart-connect { flex: 1; display: flex; align-items: center; justify-content: center; position: relative; margin: 0 10px; top: -10px; }
-    .line { width: 100%; height: 1px; background: #f9a8d4; position: absolute; z-index: 1; }
-    .heart { color: #f9a8d4; font-size: 24px; background: #fff; padding: 0 8px; z-index: 2; border-radius: 50%; }
-    .card-bottom-text { position: absolute; bottom: 15px; font-size: 12px; color: #bbb; letter-spacing: 2px; }
-
-    /* 语录条 */
-    .quote-bar { background: var(--card-bg); border-radius: 20px; padding: 16px; text-align: center; font-size: 14px; color: #666; margin-bottom: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
-
-    /* 数据卡片 */
-    .stats-grid { display: flex; gap: 12px; margin-bottom: 24px; }
-    .stats-card { flex: 1; background: var(--card-bg); border-radius: 20px; padding: 16px 10px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
-    .stats-title { font-size: 12px; color: #999; margin-bottom: 6px; }
-    .stats-value { font-size: 20px; font-weight: bold; color: #333; }
-    .stats-value span { font-size: 13px; font-weight: normal; }
-    .stats-sub { font-size: 11px; color: #ccc; margin-top: 6px; }
-    .weather-icon { font-size: 24px; margin-bottom: 4px; }
-
-    /* 底部九宫格 */
-    .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px 10px; background: var(--card-bg); border-radius: 24px; padding: 24px 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.03); }
-    .menu-item { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; }
-    .menu-icon { width: 52px; height: 52px; background: rgba(240, 244, 248, 0.9); border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
-    .menu-label { font-size: 12px; color: #555; }
-
-    /* ================= 3. 聊天界面 ================= */
-    .header { height: 56px; background: var(--theme-color); color: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; z-index: 10; }
-    .header-btn { background: none; border: none; color: #fff; font-size: 24px; }
-    .chat-container { flex: 1; background-color: #f0f2f5; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+    /* 状态与数据 */
+    .status-bar { text-align: center; font-size: 13px; color: var(--sub); margin-bottom: 16px; }
+    .stats { display: flex; gap: 12px; }
+    .stat-item { flex: 1; background: var(--card); border-radius: 18px; padding: 15px; text-align: center; }
+    .stat-item h4 { font-size: 12px; color: #999; margin-bottom: 5px; }
+    .stat-item h3 { font-size: 18px; }
     
-    /* 聊天气泡 */
-    .msg { display: flex; align-items: flex-start; max-width: 85%; }
-    .msg.me { align-self: flex-end; flex-direction: row-reverse; }
-    .msg.other { align-self: flex-start; }
-    .msg.system { align-self: center; background: rgba(0,0,0,0.06); color: #888; font-size: 12px; padding: 6px 12px; border-radius: 20px; text-align: center; }
-    .msg-avatar { width: 42px; height: 42px; border-radius: 8px; background: #ddd; object-fit: cover; }
-    .msg-content { margin: 0 10px; padding: 12px 16px; border-radius: 12px; font-size: 15px; background: #fff; line-height: 1.5; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-    .msg.me .msg-content { background: var(--bubble-me); }
-    .card-action { display: block; margin-top: 10px; padding: 8px; background: #f8f8f8; border-radius: 8px; font-size: 13px; text-align: center; border: 1px solid #eee; }
+    /* 九宫格 */
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; background: var(--card); padding: 24px 10px; border-radius: 24px; }
+    .grid-item { text-align: center; cursor: pointer; }
+    .grid-item div:first-child { font-size: 26px; margin-bottom: 6px; }
+    .grid-item div:last-child { font-size: 12px; color: #555; }
 
-    /* 聊天底部功能区 */
-    .chat-bottom { background: #fff; border-top: 1px solid #eee; display: flex; flex-direction: column; }
+    /* ================= 3. 聊天系统 ================= */
+    #page-chat { background: #f0f2f5; }
+    .chat-box { flex: 1; padding: 15px; overflow-y: auto; }
+    
+    /* 消息气泡 */
+    .msg { display: flex; margin-bottom: 15px; max-width: 85%; }
+    .msg.me { flex-direction: row-reverse; align-self: flex-end; float: right; }
+    .msg.other { float: left; }
+    .msg-avatar { width: 40px; height: 40px; border-radius: 6px; background: #ccc; }
+    .bubble { padding: 12px 16px; border-radius: 12px; margin: 0 10px; font-size: 15px; background: var(--other); box-shadow: 0 2px 5px rgba(0,0,0,0.05); line-height: 1.4; }
+    .msg.me .bubble { background: var(--me); color: #000; }
+    .msg.sys { float: none; margin: 10px auto; justify-content: center; background: rgba(0,0,0,0.1); color: #666; font-size: 12px; padding: 4px 10px; border-radius: 10px; display: table; }
+    .card-btn { display: block; width: 100%; margin-top: 8px; padding: 8px; border: 1px solid #ddd; background: #f9f9f9; border-radius: 6px; text-align: center; cursor: pointer; }
+    
+    /* 工具栏与输入 */
+    .chat-bottom { background: #fff; border-top: 1px solid #eee; }
     .tool-bar { display: flex; gap: 15px; padding: 10px 15px; overflow-x: auto; white-space: nowrap; border-bottom: 1px solid #f9f9f9; }
     .tool-bar::-webkit-scrollbar { display: none; }
-    .tool-btn { background: none; border: none; font-size: 20px; cursor: pointer; opacity: 0.7; }
-    
-    .input-bar { display: flex; padding: 10px 15px; gap: 10px; }
-    .input-bar input { flex: 1; background: #f5f5f5; border: none; border-radius: 20px; padding: 0 15px; height: 40px; outline: none; font-size: 15px; }
-    .send-btn { background: var(--theme-color); color: #fff; border: none; border-radius: 20px; padding: 0 20px; font-weight: bold; }
+    .tool-bar button { background: none; border: none; font-size: 22px; cursor: pointer; opacity: 0.8; }
+    .input-area { display: flex; padding: 10px 15px; gap: 10px; }
+    .input-area input { flex: 1; background: #f5f5f5; border: none; border-radius: 20px; padding: 0 15px; height: 40px; outline: none; font-size: 15px; }
+    .send-btn { background: var(--theme); color: #fff; border: none; border-radius: 20px; padding: 0 20px; font-weight: bold; }
 
-    /* ================= 4. 设置面板 ================= */
-    .settings-panel { position: fixed; top: 0; right: -100%; width: 85%; max-width: 400px; height: 
+    /* ================= 4. 通用子页面 ================= */
+    .sub-content { flex: 1; padding: 15px; overflow-y: auto; }
+    .sub-card { background: #fff; border-radius: 15px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+    .input-group { margin-bottom: 15px; }
+    .input-group label { display: block; font-size: 14px; color: #666; margin-bottom: 8px; }
+    .input-group input, .input-group textarea, .input-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; outline: none; }
+    .save-btn { width: 100%; padding: 12px; background: var(--theme); color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; }
+
+    /* 全局弹窗 */
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
+    .modal.show { display: flex; }
+    .modal-box { background: #fff; width: 80%; max-width: 320px; border-radius: 16px; padding: 20px; text-align: center; }
+    .modal-box h3 { margin-bottom: 15px; font-size: 18px; }
+    .modal-box p { font-size: 14px; color: #666; margin-bottom: 20px; line-height: 1.5; }
+    .modal-btn { background: var(--theme); color: #fff; border: none; padding: 10px 30px; border-radius: 20px; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <!-- 1. 开屏页 -->
+  <div id="page-splash" class="page active" onclick="go('page-home')">
+    <div class="logo">Ananke</div>
+    <div style="color: #999; letter-spacing: 2px;">命运由此展开</div>
